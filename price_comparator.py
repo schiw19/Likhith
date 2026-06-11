@@ -16,6 +16,7 @@ SAMPLE_OFFERS: List[ProductOffer] = [
     ProductOffer("eBay", "Apple iPhone 15 - 128GB", 69500.0, "https://ebay.example/iphone-15"),
     ProductOffer("Walmart", "Apple iPhone 15 128GB", 68450.0, "https://walmart.example/iphone-15"),
 ]
+DEFAULT_CURRENCY_SYMBOL = "₹"
 
 
 def _normalize(value: str) -> str:
@@ -36,7 +37,7 @@ def compare_prices(
 
 
 def format_results(
-    product_query: str, offers: Iterable[ProductOffer]
+    product_query: str, offers: Iterable[ProductOffer], currency_symbol: str = DEFAULT_CURRENCY_SYMBOL
 ) -> str:
     matching_offers, lowest = compare_prices(product_query, offers)
     if not matching_offers:
@@ -44,9 +45,9 @@ def format_results(
 
     lines = [f"Found {len(matching_offers)} offers for '{product_query}':"]
     for offer in matching_offers:
-        lines.append(f"- {offer.site}: ₹{offer.price:.2f} ({offer.url})")
+        lines.append(f"- {offer.site}: {currency_symbol}{offer.price:.2f} ({offer.url})")
     lines.append(
-        f"\nLowest price: {lowest.site} at ₹{lowest.price:.2f} ({lowest.url})"
+        f"\nLowest price: {lowest.site} at {currency_symbol}{lowest.price:.2f} ({lowest.url})"
     )
     return "\n".join(lines)
 

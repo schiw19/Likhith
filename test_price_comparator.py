@@ -25,7 +25,17 @@ class TestPriceComparator(unittest.TestCase):
 
     def test_format_results_contains_lowest_price_line(self) -> None:
         output = format_results("test product 1", self.offers)
-        self.assertIn("Lowest price: SiteB at ₹90.00 (https://b.example/item)", output)
+        expected_output = "\n".join(
+            [
+                "Found 3 offers for 'test product 1':",
+                "- SiteB: ₹90.00 (https://b.example/item)",
+                "- SiteD: ₹90.00 (https://d.example/item)",
+                "- SiteA: ₹100.00 (https://a.example/item)",
+                "",
+                "Lowest price: SiteB at ₹90.00 (https://b.example/item)",
+            ]
+        )
+        self.assertEqual(output, expected_output)
 
 
 if __name__ == "__main__":
